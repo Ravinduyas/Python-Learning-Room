@@ -49,12 +49,18 @@
     </thead>
     <tbody>
         <!-- Your rows inside the table HERE: -->
-            <tr>
-                <td>Value for Id</td>
-            </tr>
+        {% for item in items %}
+        <tr>
+            <td>Value for Id</td>
+            <td>Value for Name</td>
+            <td>Value for Barcode</td>
+            <td>Value for Price</td>
+        </tr>
+        {% endfor %}
+            
     </tbody>
     </table>
-    <p>{{ items }}</p>
+    <!-- <p>{{ items }}</p> -->
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
