@@ -51,10 +51,10 @@
         <!-- Your rows inside the table HERE: -->
         {% for item in items %}
         <tr>
-            <td>Value for Id</td>
-            <td>Value for Name</td>
-            <td>Value for Barcode</td>
-            <td>Value for Price</td>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.barcode }}</td>
+            <td>{{ item.price }}</td>
         </tr>
         {% endfor %}
             
