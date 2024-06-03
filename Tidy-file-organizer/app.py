@@ -7,7 +7,7 @@ from datetime import datetime
 class FileOrganizer:
     def __init__(self, root):
         self.root = root
-        self.root.title("Downloads File Organizer")
+        self.root.title("Tidy-File Organizer")
 
         self.frame_directory = tk.Frame(root)
         self.frame_directory.pack(padx=10, pady=5, fill=tk.X)
