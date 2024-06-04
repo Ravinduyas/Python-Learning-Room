@@ -38,10 +38,15 @@ class FileOrganizer:
 
         for item in os.listdir(directory):
             item_path = os.path.join(directory, item)
+            if os.path.isdir(item_path) and item.startswith("Tidy-"):
+                # Skip folders that are already sorted
+                continue
+
             if os.path.isfile(item_path) or os.path.isdir(item_path):
                 creation_time = os.path.getctime(item_path)
                 creation_date = datetime.fromtimestamp(creation_time).strftime('%Y%m%d')
-                destination_folder = os.path.join(directory, creation_date)
+                timestamp = datetime.now().strftime('%Y%m%d')
+                destination_folder = os.path.join(directory, f"Tidy-{creation_date}")
                 os.makedirs(destination_folder, exist_ok=True)
                 shutil.move(item_path, os.path.join(destination_folder, item))
 
