@@ -9,6 +9,8 @@ class FileOrganizer:
         self.root = root
         self.root.title("Tidy-File Organizer")
 
+        self.default_directory = r"C:\Users\Insight\Downloads"
+        
         self.frame_directory = tk.Frame(root)
         self.frame_directory.pack(padx=10, pady=5, fill=tk.X)
 
@@ -17,6 +19,7 @@ class FileOrganizer:
 
         self.entry_directory = tk.Entry(self.frame_directory, width=50)
         self.entry_directory.pack(side=tk.LEFT, padx=5)
+        self.entry_directory.insert(0, self.default_directory)
 
         self.button_browse = tk.Button(self.frame_directory, text="Browse", command=self.browse_directory)
         self.button_browse.pack(side=tk.LEFT)
@@ -45,11 +48,10 @@ class FileOrganizer:
             if os.path.isfile(item_path) or os.path.isdir(item_path):
                 creation_time = os.path.getctime(item_path)
                 creation_date = datetime.fromtimestamp(creation_time).strftime('%Y%m%d')
-                timestamp = datetime.now().strftime('%Y%m%d')
                 destination_folder = os.path.join(directory, f"Tidy-{creation_date}")
                 os.makedirs(destination_folder, exist_ok=True)
                 shutil.move(item_path, os.path.join(destination_folder, item))
-
+                
         messagebox.showinfo("Success", "Files have been organized by creation date.")
 
 if __name__ == "__main__":
