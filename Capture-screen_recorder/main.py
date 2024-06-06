@@ -22,6 +22,9 @@ while True:
     # Write the frame to the output file
     out.write(frame)
 
+    # Display the frame
+    cv2.imshow("Screen Recording", frame)
+
     # Exit the recording when 'q' is pressed
     if cv2.waitKey(1) == ord("q"):
         break
