@@ -42,7 +42,7 @@ class AudioGapTrimmerApp:
             messagebox.showinfo("Success", "Audio gaps trimmed successfully!")
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
-        
+    #remove silence
     def remove_silence(self, audio):
         # Simple silence removal logic
         non_silence = audio.strip_silence()
