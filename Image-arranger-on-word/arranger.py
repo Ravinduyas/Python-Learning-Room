@@ -33,6 +33,11 @@ def create_word_doc_with_images(folder_path, image_width_cm):
     section.bottom_margin = margin_size
     section.left_margin = margin_size
     section.right_margin = margin_size
+
+    # Add footer with "ACK COm" text
+    footer = section.footer
+    paragraph = footer.paragraphs[0] if footer.paragraphs else footer.add_paragraph()
+    paragraph.text = "ACK Communications - 0713495401"
     
     # Convert the width from cm to inches
     image_width_in = image_width_cm / 2.54
