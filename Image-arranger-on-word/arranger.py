@@ -36,6 +36,14 @@ def create_word_doc_with_images(folder_path, image_width_cm):
     
     # Convert the width from cm to inches
     image_width_in = image_width_cm / 2.54
+    
+    # Calculate available width for images on a line
+    available_width = section.page_width - section.left_margin - section.right_margin
+
+    # Initialize a paragraph to add images in line
+    paragraph = doc.add_paragraph()
+
+    current_line_width = 0
 
     # Loop through the images in the folder
     for filename in os.listdir(folder_path):
@@ -46,12 +54,19 @@ def create_word_doc_with_images(folder_path, image_width_cm):
             with Image.open(image_path) as img:
                 width, height = img.size
                 aspect_ratio = height / width
-                
-            # Add image to the document with the specified width, maintaining the aspect ratio
-            doc.add_picture(image_path, width=Inches(image_width_in))
             
-            # Add a paragraph break
-            doc.add_paragraph()
+            # Check if adding this image would exceed the available width
+            if current_line_width + image_width_in > available_width:
+                # If it would, start a new paragraph
+                paragraph = doc.add_paragraph()
+                current_line_width = 0
+            
+            # Add image to the document with the specified width, maintaining the aspect ratio
+            run = paragraph.add_run()
+            run.add_picture(image_path, width=Inches(image_width_in))
+            
+            # Update the current line width
+            current_line_width += image_width_in
 
     # Save the document
     save_path = os.path.join(folder_path, "arranged_images.docx")
