@@ -26,6 +26,13 @@ def create_word_doc_with_images(folder_path, image_width_cm):
     section = doc.sections[0]
     section.page_height = Inches(11.69)
     section.page_width = Inches(8.27)
+
+    # Set narrow margins (0.5 inches on each side)
+    margin_size = Inches(0.5)
+    section.top_margin = margin_size
+    section.bottom_margin = margin_size
+    section.left_margin = margin_size
+    section.right_margin = margin_size
     
     # Convert the width from cm to inches
     image_width_in = image_width_cm / 2.54
