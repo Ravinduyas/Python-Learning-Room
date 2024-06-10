@@ -49,7 +49,12 @@ def create_word_doc_with_images(folder_path, image_width_cm):
     # Save the document
     save_path = os.path.join(folder_path, "arranged_images.docx")
     doc.save(save_path)
+    
+    # Show success message
     messagebox.showinfo("Success", f"Document saved as {save_path}")
+    
+    # Open the created document
+    os.startfile(save_path)
 
 if __name__ == "__main__":
     folder_path = select_folder()
