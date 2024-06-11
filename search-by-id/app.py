@@ -2,7 +2,6 @@ import os
 import fnmatch
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import subprocess
 
 def search_files_and_folders(directory, pattern):
     matches = []
@@ -15,8 +14,9 @@ def search_files_and_folders(directory, pattern):
         for file_name in files:
             if fnmatch.fnmatch(file_name, pattern):
                 matches.append(os.path.join(root, file_name))
-    matches.sort()  # Sort the matches
     return matches
+
+#
 
 def browse_directory():
     directory = filedialog.askdirectory()
@@ -36,15 +36,6 @@ def start_search():
     for match in results:
         listbox_results.insert(tk.END, match)
 
-def open_selected(event):
-    selected_index = listbox_results.curselection()
-    if selected_index:
-        selected_path = listbox_results.get(selected_index)
-        if os.path.isdir(selected_path):
-            subprocess.run(["explorer", selected_path], check=True)
-        else:
-            os.startfile(selected_path)
-
 # Create the main window
 root = tk.Tk()
 root.title("File and Folder Search")
@@ -62,7 +53,7 @@ button_browse.pack(side=tk.LEFT)
 # Create and place the pattern entry
 frame_pattern = tk.Frame(root)
 frame_pattern.pack(padx=10, pady=5, fill=tk.X)
-label_pattern = tk.Label(frame_pattern, text="Search Pattern:")
+label_pattern = tk.Label(frame_pattern, text="Folder Name:")
 label_pattern.pack(side=tk.LEFT)
 entry_pattern = tk.Entry(frame_pattern, width=50)
 entry_pattern.pack(side=tk.LEFT, padx=5)
@@ -79,9 +70,6 @@ listbox_results = tk.Listbox(frame_results, yscrollcommand=scrollbar.set, width=
 scrollbar.config(command=listbox_results.yview)
 scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 listbox_results.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
-# Bind double-click event to open the selected file or folder
-listbox_results.bind("<Double-1>", open_selected)
 
 # Start the Tkinter event loop
 root.mainloop()
