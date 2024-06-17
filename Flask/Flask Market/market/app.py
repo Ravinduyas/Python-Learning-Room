@@ -34,12 +34,12 @@
 
 ######################################################## mysql #############################
 
-from flask import Flask, render_template
+# from flask import Flask, render_template
 
 
-app = Flask(__name__)
-# Update the URI to use MySQL
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:1234@localhost/market_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app = Flask(__name__)
+# # Update the URI to use MySQL
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:1234@localhost/market_db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
