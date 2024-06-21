@@ -1,12 +1,13 @@
 from textblob import TextBlob
+from langdetect import detect
 import nltk
 
 # Ensure necessary data is downloaded
 nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 # Sample text
-text = """Python is a great programming language. It's easy to learn and very powerful.
-          The community is very supportive, and there are plenty of resources available online."""
+text = """.bhcdjk ajcsb acjbsn bgcsa bsakhcnschkcss hvsa chsahk csa"""
 
 # Create a TextBlob object
 blob = TextBlob(text)
@@ -42,5 +43,9 @@ try:
 except Exception as e:
     print(f"Translation Error: {e}")
 
-detected_language = blob.detect_language()
-print(f"Detected Language: {detected_language}\n")
+# Language Detection using langdetect
+try:
+    detected_language = detect(text)
+    print(f"Detected Language: {detected_language}\n")
+except Exception as e:
+    print(f"Language Detection Error: {e}")
