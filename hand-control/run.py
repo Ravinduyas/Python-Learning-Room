@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import pyautogui
 import math
+from collections import deque
 
 # Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
@@ -13,6 +14,16 @@ cap = cv2.VideoCapture(0)
 
 screen_width, screen_height = pyautogui.size()
 click_threshold = 20  # Distance threshold for detecting click
+smooth_factor = 5  # Number of previous points to consider for smoothing
+
+# Deques to store the recent points for smoothing
+x_points = deque(maxlen=smooth_factor)
+y_points = deque(maxlen=smooth_factor)
+
+def get_smooth_coordinates(x_points, y_points):
+    avg_x = sum(x_points) / len(x_points)
+    avg_y = sum(y_points) / len(y_points)
+    return avg_x, avg_y
 
 while True:
     success, image = cap.read()
@@ -45,9 +56,16 @@ while True:
             thumb_x = int(thumb_tip.x * w)
             thumb_y = int(thumb_tip.y * h)
             
+            # Add the current point to the deques
+            x_points.append(finger_x)
+            y_points.append(finger_y)
+            
+            # Get the smoothed coordinates
+            smooth_x, smooth_y = get_smooth_coordinates(x_points, y_points)
+            
             # Convert coordinates to screen coordinates
-            screen_x = int(screen_width / w * finger_x)
-            screen_y = int(screen_height / h * finger_y)
+            screen_x = int(screen_width / w * smooth_x)
+            screen_y = int(screen_height / h * smooth_y)
             
             # Move the mouse
             pyautogui.moveTo(screen_x, screen_y)
