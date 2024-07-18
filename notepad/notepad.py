@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, simpledialog
 
 class Notepad:
     def __init__(self, root):
@@ -33,6 +33,7 @@ class Notepad:
         self.edit_menu.add_command(label="Cut", command=self.cut_text)
         self.edit_menu.add_command(label="Copy", command=self.copy_text)
         self.edit_menu.add_command(label="Paste", command=self.paste_text)
+        self.edit_menu.add_command(label="Find", command=self.find_text)  # New Find command
         
         # Help menu
         self.help_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -91,6 +92,19 @@ class Notepad:
 
     def show_about(self):
         messagebox.showinfo("About Notepad", "A simple Notepad application using Python and Tkinter.")
+        
+    def find_text(self):
+        find_string = simpledialog.askstring("Find", "Enter text to find:")
+        if find_string:
+            start_pos = "1.0"
+            while True:
+                start_pos = self.text_area.search(find_string, start_pos, stopindex=tk.END)
+                if not start_pos:
+                    break
+                end_pos = f"{start_pos}+{len(find_string)}c"
+                self.text_area.tag_add("highlight", start_pos, end_pos)
+                start_pos = end_pos
+            self.text_area.tag_config("highlight", background="yellow", foreground="black")
 
 if __name__ == "__main__":
     root = tk.Tk()
