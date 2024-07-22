@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smartphone Mouse</title>
+    <style>
+        body, html { margin: 0; padding: 0; overflow: hidden; }
+        #touchpad { width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+    <div id="touchpad"></div>
+    <script>
+        const touchpad = document.getElementById('touchpad');
+        let lastX, lastY;
+
+        touchpad.addEventListener('touchstart', (e) => {
+            lastX = e.touches[0].clientX;
+            lastY = e.touches[0].clientY;
+        });
+
+        touchpad.addEventListener('touchmove', (e) => {
+            const deltaX = e.touches[0].clientX - lastX;
+            const deltaY = e.touches[0].clientY - lastY;
+
+            fetch('/move', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ x: deltaX, y: deltaY })
+            });
+
+            lastX = e.touches[0].clientX;
+            lastY = e.touches[0].clientY;
+        });
+
+        touchpad.addEventListener('touchend', (e) => {
+            fetch('/click', { method: 'POST' });
+        });
+    </script>
+</body>
+</html>
