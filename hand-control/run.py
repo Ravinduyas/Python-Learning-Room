@@ -13,7 +13,7 @@ mp_draw = mp.solutions.drawing_utils
 cap = cv2.VideoCapture(0)
 
 screen_width, screen_height = pyautogui.size()
-click_threshold = 20  # Distance threshold for detecting click
+click_threshold = 30  # Distance threshold for detecting click
 smooth_factor = 5  # Number of previous points to consider for smoothing
 
 # Deques to store the recent points for smoothing
@@ -45,20 +45,24 @@ while True:
             # Draw landmarks on image
             mp_draw.draw_landmarks(image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
             
-            # Get coordinates of the index finger tip and thumb tip
+            # Get coordinates of the index finger tip and middle finger tip
             index_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
-            thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+            middle_finger_tip = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
             
             # Convert normalized coordinates to pixel coordinates
             h, w, _ = image.shape
-            finger_x = int(index_finger_tip.x * w)
-            finger_y = int(index_finger_tip.y * h)
-            thumb_x = int(thumb_tip.x * w)
-            thumb_y = int(thumb_tip.y * h)
+            index_x = int(index_finger_tip.x * w)
+            index_y = int(index_finger_tip.y * h)
+            middle_x = int(middle_finger_tip.x * w)
+            middle_y = int(middle_finger_tip.y * h)
             
-            # Add the current point to the deques
-            x_points.append(finger_x)
-            y_points.append(finger_y)
+            # Calculate the midpoint between index and middle fingers
+            mid_x = (index_x + middle_x) // 2
+            mid_y = (index_y + middle_y) // 2
+            
+            # Add the current midpoint to the deques
+            x_points.append(mid_x)
+            y_points.append(mid_y)
             
             # Get the smoothed coordinates
             smooth_x, smooth_y = get_smooth_coordinates(x_points, y_points)
@@ -70,8 +74,8 @@ while True:
             # Move the mouse
             pyautogui.moveTo(screen_x, screen_y)
             
-            # Calculate the distance between the index finger tip and thumb tip
-            distance = math.hypot(thumb_x - finger_x, thumb_y - finger_y)
+            # Calculate the distance between the index finger tip and middle finger tip
+            distance = math.hypot(middle_x - index_x, middle_y - index_y)
             
             # Perform a click if the distance is less than the threshold
             if distance < click_threshold:
